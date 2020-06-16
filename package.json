@@ -1,0 +1,15 @@
+{
+    "name": "testDll",
+    "version": "1.0.0",
+    "description": "des",
+    "main": "main.js",
+    "scripts": {
+        "start": "electron ."
+    },
+    "author": "",
+    "dependencies": {
+        "ffi-napi": "^2.4.5",
+        "electron": "^9.0.0",
+        "electron-builder": "^22.4.0"
+    }
+}

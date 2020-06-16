@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <title>Test</title>
+</head>
+<body>
+    <input type="text" id="numA">
+    +
+    <input type="text" id="numB">
+    =
+    <button id="CalcButton">Get Result From dll</button>
+</body>
+
+<script>
+    const electron = require("electron");
+    const exec = require('child_process').exec;
+
+    let BrowserWindow = electron.remote.BrowserWindow;
+
+    let Open1Window = null;
+    let Open2Window = null;
+    let Open3Window = null;
+
+    //call ffi test
+    const ffi = require("ffi-napi");
+
+    const myAddDll = new ffi.Library('./dll/myAddDll', {    // filepath of dll
+        'add': [                        // function name in dll
+            'int',                      // return value type of function
+            ['int', 'int'],             // params of funtions
+        ],
+    })
+
+    document.getElementById("CalcButton").onclick = function() {
+        const result = myAddDll.add(parseInt(document.getElementById("numA").value), 
+            parseInt(document.getElementById("numB").value));
+
+        electron.remote.dialog.showMessageBox({
+            type:'info',
+            title:'Result from dll is ',
+            message: result.toString(),
+            button:['ok', 'cancel']
+        }, (index) => {
+            if (index == 0) {
+                console.log('ok');
+            } else {
+                console.log('cancel');
+            }
+        })
+    }
+    //...call ffi test
+</script>
+</html>
